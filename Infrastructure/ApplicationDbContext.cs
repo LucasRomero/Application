@@ -14,6 +14,7 @@ namespace BookStoreInfrastructure
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<OrdenInversion> OrdenesInversion { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
