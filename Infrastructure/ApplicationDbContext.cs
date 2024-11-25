@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BookStoreInfrastructure
 {
-    public class ApplicationDbContext: IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<User> Users { get; set; }
 

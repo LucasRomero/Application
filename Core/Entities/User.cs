@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public sealed class User: IdentityUser
+    public sealed class User: IdentityUser<int>
     {
     }
 }

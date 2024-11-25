@@ -16,7 +16,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddBearerToken();
 
-builder.Services.AddIdentityCore<User>()
+builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
 
@@ -52,3 +52,17 @@ app.MapIdentityApi<User>();
 app.MapControllers();
 
 app.Run();
+
+
+//Campo Tipo de dato Requerido Validación
+//ID de la orden int SI N/A
+//ID de la cuenta int SI N/A
+//Nombre del activo string SI Largo máx 32
+//caracteres
+//Cantidad int SI mayor que 0
+//Precio decimal SI mayor que 0
+//Operación char SI ‘C’ para indicar
+//Compra, ‘V’ para
+//indicar Venta
+//Estado int NO Ver Adicionales
+//Monto Total decimal NO mayor que 0
