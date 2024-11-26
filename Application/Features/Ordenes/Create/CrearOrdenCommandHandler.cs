@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Enums;
+using Core.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,24 @@ namespace Application.Features.Ordenes.Create
 {
     public class CrearOrdenCommandHandler : IRequestHandler<CrearOrdenCommand, int>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CrearOrdenCommandHandler(ApplicationDbContext context)
+        public CrearOrdenCommandHandler(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<int> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
         {
-            var orden = new OrdenInversion
+            var orden = new Orden
             {
                 CuentaId = request.CuentaId,
                 NombreActivo = request.NombreActivo,
                 Cantidad = request.Cantidad,
                 Operacion = request.Operacion,
-                TipoActivo = request.TipoActivo,
-                Estado = 0, // "En proceso"
+                Precio = request.TipoActivo == TipoActivo.Accion ? 0 : request.Precio,
+                MontoTotal = CalcularMontoTotal(request),
+                Estado = (int)EstadoOrden.EnProceso
             };
 
             // Lógica de cálculo para "Monto Total"
@@ -48,10 +50,41 @@ namespace Application.Features.Ordenes.Create
                     break;
             }
 
-            _context.OrdenesInversion.Add(orden);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.OrdenesInversion.AddAsync(orden);
+            await _unitOfWork.Commit();
 
             return orden.Id;
         }
+
+
+
+        private decimal CalcularMontoTotal(CrearOrdenCommand request)
+        {
+            return request.TipoActivo switch
+            {
+                TipoActivo.FCI => request.Precio * request.Cantidad,
+                TipoActivo.Accion => CalcularAccion(request),
+                TipoActivo.Bono => CalcularBono(request),
+                _ => throw new InvalidOperationException("Tipo de activo inválido")
+            };
+        }
+
+        private decimal CalcularAccion(CrearOrdenCommand request)
+        {
+            var precioAccion = 100; // Simulación, deberías traerlo de la BBDD.
+            var monto = precioAccion * request.Cantidad;
+            var comisiones = monto * 0.006m;
+            var impuestos = comisiones * 0.21m;
+            return monto - (comisiones + impuestos);
+        }
+
+        private decimal CalcularBono(CrearOrdenCommand request)
+        {
+            var monto = request.Precio * request.Cantidad;
+            var comisiones = monto * 0.002m;
+            var impuestos = comisiones * 0.21m;
+            return monto - (comisiones + impuestos);
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class OrdenInversion: BaseEntity
+    public class Orden: BaseEntity
     {
         public int CuentaId { get; set; }
         public string NombreActivo { get; set; } = string.Empty;

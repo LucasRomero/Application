@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.GetById
 {
-    public sealed record GetOrdenByIdQuery : IRequest<OrdenInversion>
+    public sealed record GetOrdenByIdQuery : IRequest<Orden>
     {
         public int Id { get; set; }
     }

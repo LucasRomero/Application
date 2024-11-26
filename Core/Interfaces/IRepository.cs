@@ -8,11 +8,11 @@ namespace Core.Interfaces
 {
     public interface IRepository<T> where T : class
     {
+        Task AddAsync(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
-        Task<T> AddAsync(T item);
-        Task<T> UpdateAsync(T item);
-        Task<T> DeleteAsync(int id);
+        Task<T?> GetByIdAsync(int id);
 
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Core.Entities;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Ordenes.Get
+namespace Core.Interfaces
 {
-    public sealed class GetAllOrdenesQuery: IRequest<IEnumerable<Orden>>;
+    public interface IOrdenRepository : IRepository<Orden>
+    {
+    }
 }
