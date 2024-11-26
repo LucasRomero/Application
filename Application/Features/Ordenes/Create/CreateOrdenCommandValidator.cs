@@ -13,16 +13,7 @@ namespace Application.Features.Ordenes.Create
 
         public CreateOrdenCommandValidator()
         {
-            RuleFor(x => x.NombreActivo)
-                .MaximumLength(32)
-                .WithMessage("Maximo superado");
-
             RuleFor(x => x.Cantidad)
-                .NotEmpty()
-                .GreaterThan(0)
-                .WithMessage("Debe ser mayor a 0");
-
-            RuleFor(x => x.Precio)
                 .NotEmpty()
                 .GreaterThan(0)
                 .WithMessage("Debe ser mayor a 0");

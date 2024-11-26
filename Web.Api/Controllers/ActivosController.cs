@@ -1,3 +1,7 @@
+using Application.Features.Activos.Create;
+using Application.Features.Activos.Delete;
+using Application.Features.Activos.Get;
+using Application.Features.Activos.GetById;
 using Application.Features.Ordenes.Create;
 using Application.Features.Ordenes.Delete;
 using Application.Features.Ordenes.Get;
@@ -13,11 +17,11 @@ namespace Web.Api.Controllers
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    public class OrdenesController : ControllerBase
+    public class ActivosController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public OrdenesController(IMediator mediator)
+        public ActivosController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -25,21 +29,21 @@ namespace Web.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var ordenes = await _mediator.Send(new GetAllOrdenesQuery());
+            var ordenes = await _mediator.Send(new GetAllActivosQuery());
             return Ok(ordenes);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var orden = await _mediator.Send(new GetOrdenByIdQuery { Id = id });
+            var orden = await _mediator.Send(new GetActivoByIdQuery { Id = id });
             if (orden == null) return NotFound();
 
             return Ok(orden);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CrearOrdenCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateActivoCommand command)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -50,7 +54,7 @@ namespace Web.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _mediator.Send(new DeleteOrdenCommand(id));
+            await _mediator.Send(new DeleteActivoCommand(id));
             return Ok();
         }
 
