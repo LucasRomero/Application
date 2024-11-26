@@ -15,18 +15,21 @@ namespace Infrastructure
         public IOrdenRepository OrdenesRepository { get; }
         public ITipoActivoRepository TipoActivoRepository { get; }
         public IEstadoOrdenRepository EstadoOrdenRepository { get; }
+        public IActivoRepository ActivoRepository { get; }
 
 
         public UnitOfWork(
             ApplicationDbContext context,
             IOrdenRepository ordenRepository,
             ITipoActivoRepository tipoActivoRepository,
-            IEstadoOrdenRepository estadoOrdenRepository)
+            IEstadoOrdenRepository estadoOrdenRepository,
+            IActivoRepository activoRepository)
         {
             _context = context;
             OrdenesRepository = ordenRepository;
             TipoActivoRepository = tipoActivoRepository;
             EstadoOrdenRepository = estadoOrdenRepository;
+            ActivoRepository = activoRepository;
         }
 
         //public IOrdenRepository OrdenesInversion =>

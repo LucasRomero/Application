@@ -22,37 +22,45 @@ namespace Application.Features.Ordenes.Create
         public async Task<int> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
         {
 
+            var activo = new Activo();
+
+            if (request.Activo == null)
+            {
+                activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
+                if (activo == null)
+                {
+                    throw new KeyNotFoundException($"Activo con ID {request.ActivoId} no encontrado.");
+                }
+            }
+
+            var tipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(request.TipoActivoId);
+            if (tipoActivo == null)
+            {
+                throw new KeyNotFoundException($"Tipo de activo con ID {request.TipoActivoId} no encontrado.");
+            }
+
+            var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
+            if (estadoOrden == null)
+            {
+                throw new KeyNotFoundException($"Estado con ID {request.EstadoId} no encontrado.");
+            }
+
+            request.Estado = estadoOrden;
+            request.TipoActivo = tipoActivo;
+            request.Activo = activo;
 
             var orden = new Orden
             {
-                CuentaId = request.CuentaId,
-                NombreActivo = request.NombreActivo,
                 Cantidad = request.Cantidad,
                 Operacion = request.Operacion,
-                Precio = request.TipoActivo == TipoActivo.Accion ? 0 : request.Precio,
                 MontoTotal = CalcularMontoTotal(request),
-                EstadoId = (int)EstadoOrden.EnProceso
+                EstadoId = request.EstadoId,
+                TipoActivoId = request.TipoActivoId,
+                CuentaId = request.CuentaId
             };
 
-            // Lógica de cálculo para "Monto Total"
-            switch (request.TipoActivo)
-            {
-                case TiposActivo.FCI:
-                    orden.MontoTotal = request.Cantidad * request.Precio;
-                    break;
-                case TiposActivo.Accion:
-                    var comisiones = 0.006m * request.Cantidad * request.Precio;
-                    var impuestos = 0.21m * comisiones;
-                    orden.MontoTotal = request.Cantidad * request.Precio + comisiones + impuestos;
-                    break;
-                case TiposActivo.Bono:
-                    comisiones = 0.002m * request.Cantidad * request.Precio;
-                    impuestos = 0.21m * comisiones;
-                    orden.MontoTotal = request.Cantidad * request.Precio + comisiones + impuestos;
-                    break;
-            }
 
-            await _unitOfWork.OrdenesInversion.AddAsync(orden);
+            await _unitOfWork.OrdenesRepository.AddAsync(orden);
             await _unitOfWork.Commit();
 
             return orden.Id;
@@ -62,11 +70,11 @@ namespace Application.Features.Ordenes.Create
 
         private decimal CalcularMontoTotal(CrearOrdenCommand request)
         {
-            return request.TipoActivo switch
+            return request.TipoActivo.Id switch
             {
-                TipoActivo.FCI => request.Precio * request.Cantidad,
-                TipoActivo.Accion => CalcularAccion(request),
-                TipoActivo.Bono => CalcularBono(request),
+                (int)TiposActivo.FCI => request.Activo.Precio * request.Cantidad,
+                (int)TiposActivo.Accion => CalcularAccion(request),
+                (int)TiposActivo.Bono => CalcularBono(request),
                 _ => throw new InvalidOperationException("Tipo de activo inválido")
             };
         }
@@ -82,7 +90,7 @@ namespace Application.Features.Ordenes.Create
 
         private decimal CalcularBono(CrearOrdenCommand request)
         {
-            var monto = request.Precio * request.Cantidad;
+            var monto = request.Activo.Precio * request.Cantidad;
             var comisiones = monto * 0.002m;
             var impuestos = comisiones * 0.21m;
             return monto - (comisiones + impuestos);

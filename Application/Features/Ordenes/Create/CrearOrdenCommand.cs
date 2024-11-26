@@ -13,11 +13,14 @@ namespace Application.Features.Ordenes.Create
     {
         public int Cantidad { get; set; }
         public char Operacion { get; set; } // 'C' para compra, 'V' para venta
-
+        public int ActivoId { get; set; }
+        public Activo? Activo { get; set; }
         public decimal MontoTotal { get; set; }
         public int EstadoId { get; set; } // 0 = "En proceso"
         public int TipoActivoId { get; set; }
         public int CuentaId { get; set; }
+        public TipoActivo? TipoActivo { get; set; }
+        public EstadoOrden? Estado { get; set; }
 
     }
 }

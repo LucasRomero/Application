@@ -11,6 +11,7 @@ namespace Core.Interfaces
         IOrdenRepository OrdenesRepository { get; }
         ITipoActivoRepository TipoActivoRepository { get; }
         IEstadoOrdenRepository EstadoOrdenRepository { get; }
+        IActivoRepository ActivoRepository { get; }
         Task<int> Commit();
     }
 }

@@ -14,6 +14,8 @@ namespace Core.Entities
         public char Operacion { get; set; } // 'C' para compra, 'V' para venta
 
         public decimal MontoTotal { get; set; }
+        public int ActivoId { get; set; }
+        public Activo Activo { get; set; }
         public EstadoOrden EstadoOrden { get; set; }
         public int EstadoId { get; set; } // 0 = "En proceso"
         public TipoActivo TipoActivo { get; set; }
