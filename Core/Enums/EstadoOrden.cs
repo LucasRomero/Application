@@ -8,6 +8,8 @@ namespace Core.Enums
 {
     public enum EstadoOrden
     {
-        EnProceso
+        EnProceso,
+        Ejecutada,
+        Cancelada
     }
 }

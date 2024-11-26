@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Abstractions.Behaviors;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -12,7 +13,7 @@ namespace Application
             {
                 config.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
 
-                //config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 
             });
 

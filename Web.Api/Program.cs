@@ -1,5 +1,9 @@
+using Application;
 using BookStoreInfrastructure;
 using Core.Entities;
+using Core.Interfaces;
+using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +30,14 @@ var connectionString = builder.Configuration.GetConnectionString("inversiondb");
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(connectionString)
 );
+
+// Aplication 
+builder.Services.AddAplication();
+
+// Services
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IOrdenRepository, OrdenRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

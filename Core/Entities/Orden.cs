@@ -9,7 +9,6 @@ namespace Core.Entities
 {
     public class Orden: BaseEntity
     {
-        public int CuentaId { get; set; }
         public string NombreActivo { get; set; } = string.Empty;
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
@@ -17,5 +16,8 @@ namespace Core.Entities
         public int Estado { get; set; } // 0 = "En proceso"
         public decimal MontoTotal { get; set; }
         public TipoActivo TipoActivo { get; set; }
+
+        public User User { get; set; }
+        public int CuentaId { get; set; }
     }
 }
