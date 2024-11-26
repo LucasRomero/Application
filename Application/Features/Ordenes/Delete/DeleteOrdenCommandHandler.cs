@@ -26,7 +26,7 @@ namespace Application.Features.Activos.Delete
 
             if (orden is null)
             {
-                return Result<int>.Failure("la Orden no fue encontrada");
+                return Result.Failure("la Orden no fue encontrada");
             }
 
             await _unitOfWork.OrdenesRepository.Delete(orden);

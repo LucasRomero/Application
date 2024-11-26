@@ -32,6 +32,11 @@ namespace Infrastructure.Config
                 .HasForeignKey(x => x.TipoActivoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(x => x.Activo)
+                .WithMany()
+                .HasForeignKey(x => x.ActivoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             builder.Property(x => x.Cantidad)
                 .IsRequired().HasColumnType("decimal(18,2)");

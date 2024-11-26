@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Exceptions;
+using Core.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.GetById
 {
-    public sealed record GetActivoByIdQuery : IRequest<Activo>
+    public sealed record GetActivoByIdQuery : IRequest<Result<Activo>>
     {
         public int Id { get; set; }
     }

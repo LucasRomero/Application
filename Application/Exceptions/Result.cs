@@ -22,6 +22,11 @@ namespace Application.Exceptions
         {
             return new(true, null);
         }
+
+        public static Result Failure(string error)
+        {
+            return new(false, error);
+        }
     }
 
     public class Result<T> : Result

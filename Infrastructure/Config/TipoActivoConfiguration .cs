@@ -16,6 +16,8 @@ namespace Infrastructure.Config
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedNever();
+
             builder.Property(x => x.Descripcion)
                 .IsRequired()
                 .HasMaxLength(32);
