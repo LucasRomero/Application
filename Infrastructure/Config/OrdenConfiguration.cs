@@ -34,13 +34,13 @@ namespace Infrastructure.Config
 
 
             builder.Property(x => x.Cantidad)
-                .IsRequired();
+                .IsRequired().HasColumnType("decimal(18,2)");
 
             builder.Property(x => x.Operacion)
                 .IsRequired();
 
             builder.Property(x => x.MontoTotal)
-                .IsRequired();
+                .IsRequired().HasColumnType("decimal(18,2)");
         }
     }
 }

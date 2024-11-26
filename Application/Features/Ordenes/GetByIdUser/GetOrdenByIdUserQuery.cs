@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Ordenes.Get
+namespace Application.Features.Ordenes.GetById
 {
-    public sealed class GetAllOrdenesQuery(): IRequest<Result<IEnumerable<Orden>>>;
+    public sealed record GetOrdenByIdUserQuery : IRequest<Result<IEnumerable<Orden>>>
+    {
+        public int IdUser { get; set; }
+    }
 }

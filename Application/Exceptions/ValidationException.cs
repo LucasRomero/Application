@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace Application.Exceptions
 {
-    public class ValidationException : Exception
-    {
-        public IReadOnlyCollection<ValidationError> Errors { get; }
 
-        public ValidationException(IReadOnlyCollection<ValidationError> errors): base("Validation failed")
+    public abstract class AppException : Exception
+    {
+        protected AppException(string message) : base(message) { }
+    }
+
+    public class ValidationException : AppException
+    {
+        public IEnumerable<ValidationError> Errors { get; }
+
+        public ValidationException(IEnumerable<ValidationError> errors)
+            : base("Se encontraron errores de validación.")
         {
             Errors = errors;
         }

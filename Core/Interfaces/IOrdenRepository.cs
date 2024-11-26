@@ -9,5 +9,6 @@ namespace Core.Interfaces
 {
     public interface IOrdenRepository : IRepository<Orden>
     {
+        Task<IEnumerable<Orden>> GetByIdUserAsync(int id);
     }
 }

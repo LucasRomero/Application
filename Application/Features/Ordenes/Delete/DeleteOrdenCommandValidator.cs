@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BApplication.Features.Activos.Delete
 {
-    public class DeleteCommandValidator: AbstractValidator<Activo>
+    public class DeleteOrdenCommandValidator : AbstractValidator<Activo>
     {
-        public DeleteCommandValidator()
+        public DeleteOrdenCommandValidator()
         {
             RuleFor(c => c.Id).NotEmpty();
         }

@@ -43,5 +43,10 @@ namespace Infrastructure.Repositories
         {
             _context.OrdenesInversion.Remove(orden);
         }
+
+        public async Task<IEnumerable<Orden>> GetByIdUserAsync(int id)
+        {
+            return await _context.OrdenesInversion.Where(x => x.CuentaId == id).ToListAsync();
+        }
     }
 }
