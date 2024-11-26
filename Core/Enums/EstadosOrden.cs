@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Core.Enums
 {
-    public enum TipoActivo
+    public enum EstadosOrden
     {
-        FCI,
-        Accion,
-        Bono
+        EnProceso = 0,
+        Ejecutada = 1,
+        Cancelada = 2
     }
 }

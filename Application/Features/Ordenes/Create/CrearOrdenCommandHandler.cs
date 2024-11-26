@@ -21,6 +21,8 @@ namespace Application.Features.Ordenes.Create
 
         public async Task<int> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
         {
+
+
             var orden = new Orden
             {
                 CuentaId = request.CuentaId,
@@ -29,21 +31,21 @@ namespace Application.Features.Ordenes.Create
                 Operacion = request.Operacion,
                 Precio = request.TipoActivo == TipoActivo.Accion ? 0 : request.Precio,
                 MontoTotal = CalcularMontoTotal(request),
-                Estado = (int)EstadoOrden.EnProceso
+                EstadoId = (int)EstadoOrden.EnProceso
             };
 
             // Lógica de cálculo para "Monto Total"
             switch (request.TipoActivo)
             {
-                case TipoActivo.FCI:
+                case TiposActivo.FCI:
                     orden.MontoTotal = request.Cantidad * request.Precio;
                     break;
-                case TipoActivo.Accion:
+                case TiposActivo.Accion:
                     var comisiones = 0.006m * request.Cantidad * request.Precio;
                     var impuestos = 0.21m * comisiones;
                     orden.MontoTotal = request.Cantidad * request.Precio + comisiones + impuestos;
                     break;
-                case TipoActivo.Bono:
+                case TiposActivo.Bono:
                     comisiones = 0.002m * request.Cantidad * request.Precio;
                     impuestos = 0.21m * comisiones;
                     orden.MontoTotal = request.Cantidad * request.Precio + comisiones + impuestos;

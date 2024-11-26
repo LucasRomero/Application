@@ -12,15 +12,25 @@ namespace Infrastructure
     public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        private IOrdenRepository _ordenesInversionRepository;
+        public IOrdenRepository OrdenesRepository { get; }
+        public ITipoActivoRepository TipoActivoRepository { get; }
+        public IEstadoOrdenRepository EstadoOrdenRepository { get; }
 
-        public UnitOfWork(ApplicationDbContext context)
+
+        public UnitOfWork(
+            ApplicationDbContext context,
+            IOrdenRepository ordenRepository,
+            ITipoActivoRepository tipoActivoRepository,
+            IEstadoOrdenRepository estadoOrdenRepository)
         {
             _context = context;
+            OrdenesRepository = ordenRepository;
+            TipoActivoRepository = tipoActivoRepository;
+            EstadoOrdenRepository = estadoOrdenRepository;
         }
 
-        public IOrdenRepository OrdenesInversion =>
-            _ordenesInversionRepository ??= new OrdenRepository(_context);
+        //public IOrdenRepository OrdenesInversion =>
+        //    _ordenesInversionRepository ??= new OrdenRepository(_context);
 
         public async Task<int> Commit()
         {

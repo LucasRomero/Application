@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Enums
+namespace Core.Entities
 {
-    public enum EstadoOrden
+    public class EstadoOrden: BaseEntity
     {
-        EnProceso,
-        Ejecutada,
-        Cancelada
+        public string Descripcion { get; set; }
     }
 }

@@ -46,6 +46,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+DatabaseInitilaizer.Seed(app.Services);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

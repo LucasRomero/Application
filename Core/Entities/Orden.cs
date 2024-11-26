@@ -11,11 +11,13 @@ namespace Core.Entities
     {
         public string NombreActivo { get; set; } = string.Empty;
         public int Cantidad { get; set; }
-        public decimal Precio { get; set; }
         public char Operacion { get; set; } // 'C' para compra, 'V' para venta
-        public int Estado { get; set; } // 0 = "En proceso"
+
         public decimal MontoTotal { get; set; }
+        public EstadoOrden EstadoOrden { get; set; }
+        public int EstadoId { get; set; } // 0 = "En proceso"
         public TipoActivo TipoActivo { get; set; }
+        public int TipoActivoId { get; set; }
 
         public User User { get; set; }
         public int CuentaId { get; set; }

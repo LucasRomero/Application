@@ -8,7 +8,9 @@ namespace Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IOrdenRepository OrdenesInversion { get; }
+        IOrdenRepository OrdenesRepository { get; }
+        ITipoActivoRepository TipoActivoRepository { get; }
+        IEstadoOrdenRepository EstadoOrdenRepository { get; }
         Task<int> Commit();
     }
 }

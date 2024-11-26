@@ -1,4 +1,5 @@
-﻿using Core.Enums;
+﻿using Core.Entities;
+using Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace Application.Features.Ordenes.Create
 {
     public sealed record CrearOrdenCommand : IRequest<int>
     {
-        public int CuentaId { get; set; }
-        public string NombreActivo { get; set; }
         public int Cantidad { get; set; }
-        public decimal Precio { get; set; }
-        public char Operacion { get; set; }
-        public TipoActivo TipoActivo { get; set; }
+        public char Operacion { get; set; } // 'C' para compra, 'V' para venta
+
+        public decimal MontoTotal { get; set; }
+        public int EstadoId { get; set; } // 0 = "En proceso"
+        public int TipoActivoId { get; set; }
+        public int CuentaId { get; set; }
+
     }
 }
