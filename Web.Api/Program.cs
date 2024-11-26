@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Web.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,9 @@ builder.Services.AddAplication();
 // Services
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IOrdenRepository, OrdenRepository>();
+builder.Services.AddScoped<IEstadoOrdenRepository, EstadoOrdenRepository>();
+builder.Services.AddScoped<ITipoActivoRepository, TipoActivoRepository>();
+builder.Services.AddScoped<IActivoRepository, ActivoRepository>();
 
 
 builder.Services.AddControllers();
@@ -57,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 
