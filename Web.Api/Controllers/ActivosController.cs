@@ -13,7 +13,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace Web.Api.Controllers
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ActivosController : ControllerBase

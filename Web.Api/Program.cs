@@ -88,12 +88,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(connectionString)
 );
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy =>
-        policy.RequireRole("Admin"));
-});
-
 // Aplication 
 builder.Services.AddAplication();
 
