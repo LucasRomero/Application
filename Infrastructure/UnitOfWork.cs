@@ -32,9 +32,6 @@ namespace Infrastructure
             ActivoRepository = activoRepository;
         }
 
-        //public IOrdenRepository OrdenesInversion =>
-        //    _ordenesInversionRepository ??= new OrdenRepository(_context);
-
         public async Task<int> Commit()
         {
             return await _context.SaveChangesAsync();

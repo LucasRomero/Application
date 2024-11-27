@@ -36,7 +36,7 @@ namespace Infrastructure.Authentication
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.Now.AddSeconds(60),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

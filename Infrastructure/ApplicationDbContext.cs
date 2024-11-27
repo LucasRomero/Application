@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 using Core.Enums;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace BookStoreInfrastructure
 {

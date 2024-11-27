@@ -13,9 +13,9 @@ using Microsoft.Identity.Web.Resource;
 
 namespace Web.Api.Controllers
 {
+    [Authorize(Policy = "AdminPolicy")]
     [ApiController]
     [Route("[controller]")]
-    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class ActivosController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -33,7 +33,6 @@ namespace Web.Api.Controllers
             return Ok(activos);
         }
 
-        [Authorize]
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById([FromQuery] int id)
         {

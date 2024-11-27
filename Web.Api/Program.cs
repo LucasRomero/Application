@@ -1,8 +1,10 @@
 using Application;
+using Application.Authentication;
 using BookStoreInfrastructure;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
+using Infrastructure.Authentication;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,10 +20,6 @@ using Web.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
@@ -32,6 +30,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.Audience = jwtSettings["Audience"];
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -42,6 +42,31 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                context.Response.Headers.Add("Authentication-Failed", "true");
+                return Task.CompletedTask;
+                //Console.WriteLine("Autenticación fallida: " + context.Exception.Message);
+                //return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("Token validado");
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                context.HandleResponse();
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+                var result = Newtonsoft.Json.JsonConvert.SerializeObject(new { message = "Not authorized." });
+                return context.Response.WriteAsync(result);
+            }
+
+        };
+
 });
 
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
@@ -57,18 +82,17 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-
-//builder.Services.AddAuthentication().AddCookie().AddBearerToken();
-
-
-builder.Services.AddAuthorization();
-
 var connectionString = builder.Configuration.GetConnectionString("inversiondb");
 
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(connectionString)
 );
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+});
 
 // Aplication 
 builder.Services.AddAplication();
@@ -80,15 +104,17 @@ builder.Services.AddScoped<IEstadoOrdenRepository, EstadoOrdenRepository>();
 builder.Services.AddScoped<ITipoActivoRepository, TipoActivoRepository>();
 builder.Services.AddScoped<IActivoRepository, ActivoRepository>();
 
+builder.Services.AddSingleton<ITokenProvider, TokenProvider>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Application", Version = "v1" });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
         Description = "Please enter a valid token",
@@ -97,7 +123,7 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -106,12 +132,15 @@ builder.Services.AddSwaggerGen(c =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
-                }
+                },
             },
-            new string[] { }
+            Array.Empty<string>()
         }
     });
+
 });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
