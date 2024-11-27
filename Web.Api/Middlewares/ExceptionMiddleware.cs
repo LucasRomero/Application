@@ -25,8 +25,9 @@ namespace Web.Api.Middlewares
             }
             catch (Exception ex)
             {
-                context.Response.StatusCode = 500;
-                await context.Response.WriteAsJsonAsync(Result<string>.Failure("Ocurrió un error inesperado."));
+                
+                //context.Response.StatusCode = 500;
+                //await context.Response.WriteAsJsonAsync(Result<string>.Failure("Ocurrió un error inesperado."));
             }
         }
 

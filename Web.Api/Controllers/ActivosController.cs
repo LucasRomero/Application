@@ -13,7 +13,6 @@ using Microsoft.Identity.Web.Resource;
 
 namespace Web.Api.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
@@ -26,20 +25,22 @@ namespace Web.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var ordenes = await _mediator.Send(new GetAllActivosQuery());
-            return Ok(ordenes);
+            var activos = await _mediator.Send(new GetAllActivosQuery());
+            return Ok(activos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [Authorize]
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] int id)
         {
-            var orden = await _mediator.Send(new GetActivoByIdQuery { Id = id });
-            if (orden == null) return NotFound();
+            var activo = await _mediator.Send(new GetActivoByIdQuery { Id = id });
+            if (activo == null) return NotFound();
 
-            return Ok(orden);
+            return Ok(activo);
         }
 
         [HttpPost]

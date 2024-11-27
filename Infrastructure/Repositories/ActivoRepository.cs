@@ -27,7 +27,9 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Activo>> GetAllAsync()
         {
-            return await _context.Activos.ToListAsync();
+            var hola = await _context.Activos.ToListAsync();
+
+            return hola;
         }
 
         public async Task AddAsync(Activo activo)

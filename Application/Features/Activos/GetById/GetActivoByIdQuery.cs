@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.GetById
 {
-    public sealed record GetActivoByIdQuery : IRequest<Result<Activo>>
+    public sealed record GetActivoByIdQuery : IRequest<Result>
     {
         public int Id { get; set; }
     }

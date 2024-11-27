@@ -24,11 +24,11 @@ namespace Infrastructure.Config
 
             builder.Property(x => x.Ticker)
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(30);
 
             builder.Property(x => x.Precio)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("decimal(18,4)");
 
             builder.HasOne(x => x.TipoActivo)
                 .WithMany()

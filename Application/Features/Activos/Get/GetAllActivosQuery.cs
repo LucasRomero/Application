@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Exceptions;
+using Core.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Get
 {
-    public sealed class GetAllActivosQuery : IRequest<IEnumerable<Activo>>;
+    public sealed class GetAllActivosQuery : IRequest<Result<IEnumerable<Activo>>>;
 }

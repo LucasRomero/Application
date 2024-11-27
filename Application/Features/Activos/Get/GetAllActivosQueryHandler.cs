@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Exceptions;
+using Core.Entities;
 using Core.Interfaces;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Get
 {
-    public class GetAllActivosQueryHandler : IRequestHandler<GetAllActivosQuery, IEnumerable<Activo>>
+    public class GetAllActivosQueryHandler : IRequestHandler<GetAllActivosQuery, Result<IEnumerable<Activo>>>
     {
 
         private readonly IUnitOfWork _unitOfWork;
@@ -19,10 +20,11 @@ namespace Application.Features.Activos.Get
             _unitOfWork = unitOfWork;
         }
 
-        async Task<IEnumerable<Activo>> IRequestHandler<GetAllActivosQuery, IEnumerable<Activo>>.Handle(GetAllActivosQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<Activo>>> Handle(GetAllActivosQuery request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.ActivoRepository.GetAllAsync();
+            var activos = await _unitOfWork.ActivoRepository.GetAllAsync();
 
+            return Result<IEnumerable<Activo>>.Success(activos);
         }
     }
 }
