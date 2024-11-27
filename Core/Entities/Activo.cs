@@ -9,7 +9,7 @@ namespace Core.Entities
 {
     public class Activo : BaseEntity
     {
-        public string Nombre { get; set; } = string.Empty;
+        public string Nombre { get; set; }
         public string Ticker { get; set; }
         public decimal Precio { get; set; }
 
