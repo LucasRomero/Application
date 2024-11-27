@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Get
 {
-    public class GetAllActivosQueryHandler : IRequestHandler<GetAllActivosQuery, Result<IEnumerable<Activo>>>
+    internal sealed class GetAllActivosQueryHandler : IRequestHandler<GetAllActivosQuery, Result<IEnumerable<Activo>>>
     {
 
         private readonly IUnitOfWork _unitOfWork;

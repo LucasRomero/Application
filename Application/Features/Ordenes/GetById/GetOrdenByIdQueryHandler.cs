@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.GetById
 {
-    internal class GetOrdenByIdQueryHandler : IRequestHandler<GetOrdenByIdQuery, Result<Orden>>
+    internal sealed class GetOrdenByIdQueryHandler : IRequestHandler<GetOrdenByIdQuery, Result<Orden>>
     {
 
         private readonly IUnitOfWork _unitOfWork;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    public class CrearActivoCommandHandler : IRequestHandler<CreateActivoCommand, int>
+    internal sealed class CrearActivoCommandHandler : IRequestHandler<CreateActivoCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
 

@@ -14,5 +14,11 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>TestProject</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
 </Project>

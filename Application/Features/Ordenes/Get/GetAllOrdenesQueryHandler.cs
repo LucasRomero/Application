@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Get
 {
-    public class GetAllOrdenesQueryHandler : IRequestHandler<GetAllOrdenesQuery, Result<IEnumerable<Orden>>>
+    internal sealed class GetAllOrdenesQueryHandler : IRequestHandler<GetAllOrdenesQuery, Result<IEnumerable<Orden>>>
     {
 
         private readonly IUnitOfWork _unitOfWork;

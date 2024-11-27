@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Get
 {
-    public class GetAllEstadosQueryHandler : IRequestHandler<GetAllEstadosQuery, Result<IEnumerable<EstadoOrden>>>
+    internal sealed class GetAllEstadosQueryHandler : IRequestHandler<GetAllEstadosQuery, Result<IEnumerable<EstadoOrden>>>
     {
 
         private readonly IUnitOfWork _unitOfWork;

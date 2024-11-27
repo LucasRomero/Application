@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Application.Exceptions;
 using Core.Entities;
 using Core.Enums;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    public sealed record CrearOrdenCommand : ICommand<int>
+    public sealed record CrearOrdenCommand : ICommand<Result<int>>
     {
         public int Cantidad { get; set; }
         public char Operacion { get; set; } // 'C' para compra, 'V' para venta

@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Exceptions;
+using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    public class CrearOrdenCommandHandler : IRequestHandler<CrearOrdenCommand, int>
+    internal sealed class CrearOrdenCommandHandler : IRequestHandler<CrearOrdenCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,7 +20,7 @@ namespace Application.Features.Ordenes.Create
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
         {
 
             var activo = new Activo();
@@ -29,20 +30,20 @@ namespace Application.Features.Ordenes.Create
                 activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
                 if (activo == null)
                 {
-                    throw new KeyNotFoundException($"Activo con ID {request.ActivoId} no encontrado.");
+                    return Result<int>.Failure($"Activo con ID {request.ActivoId} no encontrado.");
                 }
             }
 
             var tipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(request.TipoActivoId);
             if (tipoActivo == null)
             {
-                throw new KeyNotFoundException($"Tipo de activo con ID {request.TipoActivoId} no encontrado.");
+                return Result<int>.Failure($"Tipo de activo con ID {request.TipoActivoId} no encontrado.");
             }
 
             var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
             if (estadoOrden == null)
             {
-                throw new KeyNotFoundException($"Estado con ID {request.EstadoId} no encontrado.");
+                return Result<int>.Failure($"Estado con ID {request.EstadoId} no encontrado.");
             }
 
             request.Estado = estadoOrden;
@@ -63,7 +64,7 @@ namespace Application.Features.Ordenes.Create
             await _unitOfWork.OrdenesRepository.AddAsync(orden);
             await _unitOfWork.Commit();
 
-            return orden.Id;
+            return Result<int>.Success(orden.Id);
         }
 
 
