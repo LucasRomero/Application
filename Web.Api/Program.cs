@@ -34,7 +34,9 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequiredLength = 12;
     options.SignIn.RequireConfirmedEmail = false;
 })
+    .AddRoles<IdentityRole<int>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>

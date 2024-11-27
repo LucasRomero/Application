@@ -23,16 +23,15 @@ namespace Web.Api.Controllers
     
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly ITokenProvider _tokenProvider;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenProvider tokenProvider)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _tokenProvider = tokenProvider;
         }
 
@@ -51,10 +50,9 @@ namespace Web.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-            if (result.Succeeded)
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var user = await _userManager.FindByNameAsync(model.Username);
                 var token = _tokenProvider.GetToken(user);
                 return Ok(new { token });
             }
