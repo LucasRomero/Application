@@ -23,25 +23,20 @@ namespace Application.Features.Ordenes.Create
         public async Task<Result<int>> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
         {
 
-            var activo = new Activo();
-
-            if (request.Activo == null)
+            var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
+            if (activo == null)
             {
-                activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
-                if (activo == null)
-                {
-                    return Result<int>.Failure($"Activo con ID {request.ActivoId} no encontrado.");
-                }
+                return Result<int>.Failure($"Activo con ID {request.ActivoId} no encontrado.");
             }
 
             var tipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(request.TipoActivoId);
-            if (tipoActivo == null)
+            if (tipoActivo is null)
             {
                 return Result<int>.Failure($"Tipo de activo con ID {request.TipoActivoId} no encontrado.");
             }
 
             var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
-            if (estadoOrden == null)
+            if (estadoOrden is null)
             {
                 return Result<int>.Failure($"Estado con ID {request.EstadoId} no encontrado.");
             }

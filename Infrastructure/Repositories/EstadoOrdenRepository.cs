@@ -22,7 +22,9 @@ namespace Infrastructure.Repositories
 
         public async Task<EstadoOrden?> GetByIdAsync(int id)
         {
-            return await _context.EstadosOrden.FindAsync(id);
+            var estado = await _context.EstadosOrden.FindAsync(id);
+
+            return estado ?? null;
         }
 
         public async Task<IEnumerable<EstadoOrden>> GetAllAsync()
