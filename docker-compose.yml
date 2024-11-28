@@ -1,0 +1,23 @@
+name: application_services
+services:
+  application_api:
+    container_name: application_api
+    build:
+      context: .
+      dockerfile: Web.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      - docker_sqlserver
+
+  docker_sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: docker_sqlserver
+    build:
+      context: .
+      dockerfile: Web.Api/Dockerfile
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Password123"
+      ACCEPT_EULA: "Y"
