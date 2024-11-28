@@ -25,11 +25,7 @@ namespace Infrastructure.Config
             builder.HasOne(x => x.EstadoOrden)
                 .WithMany()
                 .HasForeignKey(x => x.EstadoId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(x => x.TipoActivo)
-                .WithMany()
-                .HasForeignKey(x => x.TipoActivoId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Activo)

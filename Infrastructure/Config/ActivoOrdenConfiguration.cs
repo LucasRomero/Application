@@ -33,6 +33,7 @@ namespace Infrastructure.Config
             builder.HasOne(x => x.TipoActivo)
                 .WithMany()
                 .HasForeignKey(x => x.TipoId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

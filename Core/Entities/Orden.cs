@@ -17,8 +17,6 @@ namespace Core.Entities
         public Activo Activo { get; set; }
         public EstadoOrden EstadoOrden { get; set; }
         public int EstadoId { get; set; }
-        public TipoActivo TipoActivo { get; set; }
-        public int TipoActivoId { get; set; }
 
         public User User { get; set; }
         public int CuentaId { get; set; }

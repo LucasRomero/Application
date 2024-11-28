@@ -39,7 +39,7 @@ namespace Web.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CrearOrdenCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateOrdenCommand command)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

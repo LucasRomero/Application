@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    public sealed record CrearOrdenRequest
+    public sealed record CreateOrdenRequest
     {
         public int CuentaId { get; set; }
         public User User { get; set; }

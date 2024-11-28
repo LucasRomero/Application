@@ -23,7 +23,7 @@ namespace TestProject.Services
         public async Task Handle_should_returnActivoNotFoundFailureResult()
         {
             // Arrange
-            var command = new CrearOrdenCommand
+            var command = new CreateOrdenCommand
             {
                 Cantidad = 1,
                 Operacion = 'C',
@@ -57,7 +57,7 @@ namespace TestProject.Services
         public async Task Handle_should_returnTipoActivoNotFoundFailureResult()
         {
             // Arrange
-            var command = new CrearOrdenCommand
+            var command = new CreateOrdenCommand
             {
                 Cantidad = 1,
                 Operacion = 'C',
@@ -102,7 +102,7 @@ namespace TestProject.Services
         public async Task Handle_should_returnEstadoNotFoundFailureResult()
         {
             // Arrange
-            var command = new CrearOrdenCommand
+            var command = new CreateOrdenCommand
             {
                 Cantidad = 1,
                 Operacion = 'C',
@@ -156,7 +156,7 @@ namespace TestProject.Services
         public async Task Handle_should_returnSuccedResult()
         {
             // Arrange
-            var command = new CrearOrdenCommand
+            var command = new CreateOrdenCommand
             {
                 Cantidad = 1,
                 Operacion = 'C',

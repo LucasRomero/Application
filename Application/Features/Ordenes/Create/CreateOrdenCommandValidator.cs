@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    public class CreateOrdenCommandValidator: AbstractValidator<CrearOrdenCommand>
+    public class CreateOrdenCommandValidator: AbstractValidator<CreateOrdenCommand>
     {
 
         public CreateOrdenCommandValidator()
@@ -27,13 +27,9 @@ namespace Application.Features.Ordenes.Create
                 .GreaterThan(0)
                 .WithMessage("Debe contener un ActivoId asociada");
 
-            RuleFor(x => x.EstadoId)
-                .NotEmpty()
-                .WithMessage("Debe contener un EstadoId asociada");
-
-            RuleFor(x => x.TipoActivoId)
-                .NotEmpty()
-                .WithMessage("Debe contener un TipoActivoId asociada");
+            //RuleFor(x => x.EstadoId)
+            //    .NotEmpty()
+            //    .WithMessage("Debe contener un EstadoId asociada");
 
             RuleFor(x => x.CuentaId)
                 .NotEmpty()

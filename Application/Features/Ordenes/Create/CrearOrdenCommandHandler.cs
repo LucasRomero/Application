@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    internal sealed class CrearOrdenCommandHandler : IRequestHandler<CrearOrdenCommand, Result<int>>
+    internal sealed class CrearOrdenCommandHandler : IRequestHandler<CreateOrdenCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -20,7 +20,7 @@ namespace Application.Features.Ordenes.Create
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(CrearOrdenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CreateOrdenCommand request, CancellationToken cancellationToken)
         {
 
             var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
@@ -29,10 +29,11 @@ namespace Application.Features.Ordenes.Create
                 return Result<int>.Failure($"Activo con ID {request.ActivoId} no encontrado.");
             }
 
-            var tipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(request.TipoActivoId);
-            if (tipoActivo is null)
+            activo.TipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(activo.TipoId);
+
+            if (activo.TipoActivo is null)
             {
-                return Result<int>.Failure($"Tipo de activo con ID {request.TipoActivoId} no encontrado.");
+                return Result<int>.Failure($"Tipo de activo con ID {activo.TipoId} no encontrado.");
             }
 
             var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
@@ -42,7 +43,6 @@ namespace Application.Features.Ordenes.Create
             }
 
             request.Estado = estadoOrden;
-            request.TipoActivo = tipoActivo;
             request.Activo = activo;
 
             var orden = new Orden
@@ -50,8 +50,7 @@ namespace Application.Features.Ordenes.Create
                 Cantidad = request.Cantidad,
                 Operacion = request.Operacion,
                 MontoTotal = CalcularMontoTotal(request),
-                EstadoId = request.EstadoId,
-                TipoActivoId = request.TipoActivoId,
+                EstadoId = (int)EstadosOrden.EnProceso,
                 CuentaId = request.CuentaId
             };
 
@@ -64,9 +63,9 @@ namespace Application.Features.Ordenes.Create
 
 
 
-        private decimal CalcularMontoTotal(CrearOrdenCommand request)
+        private decimal CalcularMontoTotal(CreateOrdenCommand request)
         {
-            return request.TipoActivo.Id switch
+            return request.Activo.TipoActivo.Id switch
             {
                 (int)TiposActivo.FCI => request.Activo.Precio * request.Cantidad,
                 (int)TiposActivo.Accion => CalcularAccion(request),
@@ -75,7 +74,7 @@ namespace Application.Features.Ordenes.Create
             };
         }
 
-        private decimal CalcularAccion(CrearOrdenCommand request)
+        private decimal CalcularAccion(CreateOrdenCommand request)
         {
             var precioAccion = 100; // Simulación, deberías traerlo de la BBDD.
             var monto = precioAccion * request.Cantidad;
@@ -84,7 +83,7 @@ namespace Application.Features.Ordenes.Create
             return monto - (comisiones + impuestos);
         }
 
-        private decimal CalcularBono(CrearOrdenCommand request)
+        private decimal CalcularBono(CreateOrdenCommand request)
         {
             var monto = request.Activo.Precio * request.Cantidad;
             var comisiones = monto * 0.002m;
