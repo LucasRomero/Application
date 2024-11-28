@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Ordenes.Create
+namespace Application.Features.Ordenes.Update
 {
     public sealed record UpdateOrdenCommand : ICommand<Result<int>>
     {

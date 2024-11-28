@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    internal sealed class CrearOrdenCommandHandler : IRequestHandler<CreateOrdenCommand, Result<int>>
+    internal sealed class CreateOrdenCommandHandler : IRequestHandler<CreateOrdenCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CrearOrdenCommandHandler(IUnitOfWork unitOfWork)
+        public CreateOrdenCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -76,7 +76,7 @@ namespace Application.Features.Ordenes.Create
 
         private decimal CalcularAccion(CreateOrdenCommand request)
         {
-            var precioAccion = 100; // Simulación, deberías traerlo de la BBDD.
+            var precioAccion = request.Activo.Precio;
             var monto = precioAccion * request.Cantidad;
             var comisiones = monto * 0.006m;
             var impuestos = comisiones * 0.21m;

@@ -42,7 +42,7 @@ namespace TestProject.Services
                 .Setup(uow => uow.ActivoRepository)
                 .Returns(activoRepositoryMock.Object);
 
-            var handler = new CrearOrdenCommandHandler(_unitOfWorkMock.Object);
+            var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
 
             // Act
             Result<int> result = await handler.Handle(command, default);
@@ -85,7 +85,7 @@ namespace TestProject.Services
                 .Setup(uow => uow.TipoActivoRepository)
                 .Returns(tipoActivoRepositoryMock.Object);
 
-            var handler = new CrearOrdenCommandHandler(_unitOfWorkMock.Object);
+            var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
 
             // Act
             Result<int> result = await handler.Handle(command, default);
@@ -138,7 +138,7 @@ namespace TestProject.Services
                 .Setup(uow => uow.EstadoOrdenRepository)
                 .Returns(estadoRepositoryMock.Object);
 
-            var handler = new CrearOrdenCommandHandler(_unitOfWorkMock.Object);
+            var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
 
             // Act
             Result<int> result = await handler.Handle(command, default);
@@ -206,7 +206,7 @@ namespace TestProject.Services
                 .Returns(It.IsAny<Task<int>>());
 
 
-            var handler = new CrearOrdenCommandHandler(_unitOfWorkMock.Object);
+            var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
 
             // Act
             Result<int> result = await handler.Handle(command, default);
