@@ -27,10 +27,6 @@ namespace Application.Features.Ordenes.Create
                 .GreaterThan(0)
                 .WithMessage("Debe contener un ActivoId asociada");
 
-            //RuleFor(x => x.EstadoId)
-            //    .NotEmpty()
-            //    .WithMessage("Debe contener un EstadoId asociada");
-
             RuleFor(x => x.CuentaId)
                 .NotEmpty()
                 .WithMessage("Debe contener una CuentaId asociada");

@@ -30,7 +30,6 @@ namespace TestProject.Services
                 ActivoId = 0,
                 MontoTotal = 0,
                 EstadoId = 0,
-                TipoActivoId = 1,
                 CuentaId = 1,
             };
 
@@ -64,7 +63,6 @@ namespace TestProject.Services
                 ActivoId = 1,
                 MontoTotal = 0,
                 EstadoId = 0,
-                TipoActivoId = 0,
                 CuentaId = 1,
             };
 
@@ -109,7 +107,6 @@ namespace TestProject.Services
                 ActivoId = 1,
                 MontoTotal = 0,
                 EstadoId = 4,
-                TipoActivoId = 1,
                 CuentaId = 1,
             };
 
@@ -163,7 +160,6 @@ namespace TestProject.Services
                 ActivoId = 1,
                 MontoTotal = 0,
                 EstadoId = 0,
-                TipoActivoId = 1,
                 CuentaId = 1,
             };
 
