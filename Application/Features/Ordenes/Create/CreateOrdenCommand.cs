@@ -14,7 +14,7 @@ namespace Application.Features.Ordenes.Create
     public sealed record CreateOrdenCommand : ICommand<Result<int>>
     {
         public int Cantidad { get; set; }
-        public char Operacion { get; set; } // 'C' para compra, 'V' para venta
+        public char Operacion { get; set; }
         public int ActivoId { get; set; }
         public Activo? Activo { get; set; }
         public int CuentaId { get; set; }

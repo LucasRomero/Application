@@ -1,4 +1,5 @@
 ﻿using Application.Exceptions;
+using System.Net;
 
 namespace Web.Api.Middlewares
 {
@@ -20,15 +21,27 @@ namespace Web.Api.Middlewares
             }
             catch (ValidationException ex)
             {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsJsonAsync(Result<string>.Failure(ex.Message));
+                await HandleExceptionAsync(context, HttpStatusCode.BadRequest, Result<string>.Failure(ex.Message));
             }
             catch (Exception ex)
             {
-                
-                //context.Response.StatusCode = 500;
-                //await context.Response.WriteAsJsonAsync(Result<string>.Failure("Ocurrió un error inesperado."));
+                await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, Result<string>.Failure("Ocurrio un error"));
             }
+        }
+
+        private static async Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, Result<string> message)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)statusCode;
+
+            var response = new
+            {
+                Code = statusCode,
+                Message = message,
+                Timestamp = DateTime.UtcNow
+            };
+
+            await context.Response.WriteAsJsonAsync(response);
         }
 
     }

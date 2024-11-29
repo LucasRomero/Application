@@ -12,10 +12,8 @@ namespace Application.Features.Ordenes.Create
     public sealed record CreateOrdenRequest
     {
         public int CuentaId { get; set; }
-        public User User { get; set; }
         public int Cantidad { get; set; }
         public char Operacion { get; set; }
         public int ActivoId { get; set; }
-        public Activo Activo { get; set; }
     }
 }

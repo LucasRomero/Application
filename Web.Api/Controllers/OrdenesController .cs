@@ -47,7 +47,6 @@ namespace Web.Api.Controllers
             var command = new CreateOrdenCommand
             {
                 Cantidad = request.Cantidad,
-                Activo = request.Activo,
                 ActivoId = request.ActivoId,
                 CuentaId = request.CuentaId,
                 Operacion = request.Operacion
@@ -69,7 +68,7 @@ namespace Web.Api.Controllers
             };
 
             var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = result.Value }, command);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

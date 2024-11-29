@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Update
 {
-    internal sealed class UpdateOrdenCommandHandler : IRequestHandler<UpdateOrdenCommand, Result<int>>
+    internal sealed class UpdateOrdenCommandHandler : IRequestHandler<UpdateOrdenCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -20,35 +20,27 @@ namespace Application.Features.Ordenes.Update
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(UpdateOrdenCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateOrdenCommand request, CancellationToken cancellationToken)
         {
 
             var orden = await _unitOfWork.OrdenesRepository.GetByIdAsync(request.IdOrden);
             if (orden is null)
             {
-                return Result<int>.Failure($"Estado con ID {request.EstadoId} no encontrado.");
+                return Result.Failure($"Estado con ID {request.EstadoId} no encontrado.");
             }
 
             var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
             if (estadoOrden is null)
             {
-                return Result<int>.Failure($"Estado con ID {request.EstadoId} no encontrado.");
+                return Result.Failure($"Estado con ID {request.EstadoId} no encontrado.");
             }
 
-            var updateOrden = new Orden
-            {
-                Cantidad = orden.Cantidad,
-                Operacion = orden.Operacion,
-                MontoTotal = orden.MontoTotal,
-                EstadoId = request.EstadoId,
-                CuentaId = orden.CuentaId,
-                ActivoId =  orden.ActivoId
-            };
+            orden.EstadoId = request.EstadoId;
 
             await _unitOfWork.OrdenesRepository.Update(orden);
             await _unitOfWork.Commit();
 
-            return Result<int>.Success(orden.Id);
+            return Result<Orden>.Success(orden);
         }
 
     }

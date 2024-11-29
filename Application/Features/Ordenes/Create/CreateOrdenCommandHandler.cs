@@ -20,13 +20,13 @@ namespace Application.Features.Ordenes.Create
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(CreateOrdenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CreateOrdenCommand command, CancellationToken cancellationToken)
         {
 
-            var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
+            var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(command.ActivoId);
             if (activo == null)
             {
-                return Result<int>.Failure($"Activo con ID {request.ActivoId} no encontrado.");
+                return Result<int>.Failure($"Activo con ID {command.ActivoId} no encontrado.");
             }
 
             activo.TipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(activo.TipoId);
@@ -36,16 +36,16 @@ namespace Application.Features.Ordenes.Create
                 return Result<int>.Failure($"Tipo de activo con ID {activo.TipoId} no encontrado.");
             }
 
-            request.Activo = activo;
+            command.Activo = activo;
 
             var orden = new Orden
             {
-                Cantidad = request.Cantidad,
-                Operacion = request.Operacion,
-                MontoTotal = CalcularMontoTotal(request),
+                Cantidad = command.Cantidad,
+                Operacion = command.Operacion,
+                MontoTotal = CalcularMontoTotal(command),
                 EstadoId = (int)EstadosOrden.EnProceso,
-                CuentaId = request.CuentaId,
-                ActivoId = request.ActivoId
+                CuentaId = command.CuentaId,
+                ActivoId = command.ActivoId
             };
 
 
