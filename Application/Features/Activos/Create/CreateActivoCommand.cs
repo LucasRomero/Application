@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Application.Exceptions;
 using Core.Entities;
 using Core.Enums;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Create
 {
-    public sealed record CreateActivoCommand : ICommand<int>
+    public sealed record CreateActivoCommand : ICommand<Result<int>>
     {
         public string Nombre { get; set; }
         public string Ticker { get; set; }

@@ -31,12 +31,14 @@ namespace Infrastructure.Repositories
 
         public async Task AddAsync(Orden orden)
         {
+            _context.Entry(orden).State = EntityState.Added;
             await _context.OrdenesInversion.AddAsync(orden);
         }
 
         public async Task Update(Orden orden)
         {
-             _context.OrdenesInversion.Update(orden);
+            _context.Entry(orden).State = EntityState.Modified;
+            _context.OrdenesInversion.Update(orden);
         }
 
         public async Task Delete(Orden orden)

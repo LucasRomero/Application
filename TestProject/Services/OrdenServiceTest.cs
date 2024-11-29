@@ -28,8 +28,6 @@ namespace TestProject.Services
                 Cantidad = 1,
                 Operacion = 'C',
                 ActivoId = 0,
-                MontoTotal = 0,
-                EstadoId = 0,
                 CuentaId = 1,
             };
 
@@ -61,8 +59,6 @@ namespace TestProject.Services
                 Cantidad = 1,
                 Operacion = 'C',
                 ActivoId = 1,
-                MontoTotal = 0,
-                EstadoId = 0,
                 CuentaId = 1,
             };
 
@@ -105,8 +101,6 @@ namespace TestProject.Services
                 Cantidad = 1,
                 Operacion = 'C',
                 ActivoId = 1,
-                MontoTotal = 0,
-                EstadoId = 4,
                 CuentaId = 1,
             };
 
@@ -129,14 +123,6 @@ namespace TestProject.Services
                 .Setup(uow => uow.TipoActivoRepository)
                 .Returns(tipoActivoRepositoryMock.Object);
 
-            var estadoRepositoryMock = new Mock<IEstadoOrdenRepository>();
-            estadoRepositoryMock
-                .Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync((EstadoOrden)null);
-
-            _unitOfWorkMock
-                .Setup(uow => uow.EstadoOrdenRepository)
-                .Returns(estadoRepositoryMock.Object);
 
             var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
 
@@ -158,8 +144,6 @@ namespace TestProject.Services
                 Cantidad = 1,
                 Operacion = 'C',
                 ActivoId = 1,
-                MontoTotal = 0,
-                EstadoId = 0,
                 CuentaId = 1,
             };
 
@@ -181,15 +165,6 @@ namespace TestProject.Services
             _unitOfWorkMock
                 .Setup(uow => uow.TipoActivoRepository)
                 .Returns(tipoActivoRepositoryMock.Object);
-
-            var estadoRepositoryMock = new Mock<IEstadoOrdenRepository>();
-            estadoRepositoryMock
-                .Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new EstadoOrden() { });
-
-            _unitOfWorkMock
-                .Setup(uow => uow.EstadoOrdenRepository)
-                .Returns(estadoRepositoryMock.Object);
 
 
             var ordenRepositoryMock = new Mock<IOrdenRepository>();

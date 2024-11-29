@@ -41,10 +41,11 @@ namespace Application.Features.Ordenes.Update
                 Operacion = orden.Operacion,
                 MontoTotal = orden.MontoTotal,
                 EstadoId = request.EstadoId,
-                CuentaId = orden.CuentaId
+                CuentaId = orden.CuentaId,
+                ActivoId =  orden.ActivoId
             };
 
-            await _unitOfWork.OrdenesRepository.AddAsync(orden);
+            await _unitOfWork.OrdenesRepository.Update(orden);
             await _unitOfWork.Commit();
 
             return Result<int>.Success(orden.Id);

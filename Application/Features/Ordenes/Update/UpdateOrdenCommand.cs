@@ -15,7 +15,5 @@ namespace Application.Features.Ordenes.Update
     {
         public int IdOrden { get; set; }
         public int EstadoId { get; set; }
-        public Orden? Estado { get; set; }
-
     }
 }

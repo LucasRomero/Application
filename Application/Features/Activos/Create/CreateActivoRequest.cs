@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Create
 {
-    public sealed record ActivosOrdenRequest
+    public sealed record CreateActivoRequest
     {
         public string Nombre { get; set; }
         public string Ticker { get; set; }

@@ -17,10 +17,7 @@ namespace Application.Features.Ordenes.Create
         public char Operacion { get; set; } // 'C' para compra, 'V' para venta
         public int ActivoId { get; set; }
         public Activo? Activo { get; set; }
-        public decimal MontoTotal { get; set; }
-        public int EstadoId { get; set; }
         public int CuentaId { get; set; }
-        public EstadoOrden? Estado { get; set; }
 
     }
 }

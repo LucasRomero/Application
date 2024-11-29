@@ -2,6 +2,7 @@ using Application.Features.Ordenes.Create;
 using Application.Features.Ordenes.Delete;
 using Application.Features.Ordenes.Get;
 using Application.Features.Ordenes.GetById;
+using Application.Features.Ordenes.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,12 +40,36 @@ namespace Web.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateOrdenCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateOrdenRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var id = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id }, command);
+            var command = new CreateOrdenCommand
+            {
+                Cantidad = request.Cantidad,
+                Activo = request.Activo,
+                ActivoId = request.ActivoId,
+                CuentaId = request.CuentaId,
+                Operacion = request.Operacion
+            };
+
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Value }, command);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateOrdenRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var command = new UpdateOrdenCommand
+            {
+                EstadoId = request.EstadoId,
+                IdOrden = request.IdOrden,
+            };
+
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Value }, command);
         }
 
         [HttpDelete("{id}")]

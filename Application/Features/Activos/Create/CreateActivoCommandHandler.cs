@@ -1,4 +1,5 @@
-﻿using Application.Features.Activos.Create;
+﻿using Application.Exceptions;
+using Application.Features.Activos.Create;
 using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
@@ -11,16 +12,16 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Create
 {
-    internal sealed class CrearActivoCommandHandler : IRequestHandler<CreateActivoCommand, int>
+    internal sealed class CreateActivoCommandHandler : IRequestHandler<CreateActivoCommand, Result<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CrearActivoCommandHandler(IUnitOfWork unitOfWork)
+        public CreateActivoCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateActivoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CreateActivoCommand request, CancellationToken cancellationToken)
         {
 
             var activo = new Activo
@@ -35,7 +36,7 @@ namespace Application.Features.Ordenes.Create
             await _unitOfWork.ActivoRepository.AddAsync(activo);
             await _unitOfWork.Commit();
 
-            return activo.Id;
+            return Result<int>.Success(activo.Id);
         }
 
     }

@@ -36,13 +36,6 @@ namespace Application.Features.Ordenes.Create
                 return Result<int>.Failure($"Tipo de activo con ID {activo.TipoId} no encontrado.");
             }
 
-            var estadoOrden = await _unitOfWork.EstadoOrdenRepository.GetByIdAsync(request.EstadoId);
-            if (estadoOrden is null)
-            {
-                return Result<int>.Failure($"Estado con ID {request.EstadoId} no encontrado.");
-            }
-
-            request.Estado = estadoOrden;
             request.Activo = activo;
 
             var orden = new Orden
@@ -51,7 +44,8 @@ namespace Application.Features.Ordenes.Create
                 Operacion = request.Operacion,
                 MontoTotal = CalcularMontoTotal(request),
                 EstadoId = (int)EstadosOrden.EnProceso,
-                CuentaId = request.CuentaId
+                CuentaId = request.CuentaId,
+                ActivoId = request.ActivoId
             };
 
 
