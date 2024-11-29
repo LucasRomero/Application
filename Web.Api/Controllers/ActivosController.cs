@@ -46,8 +46,6 @@ namespace Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateActivoRequest request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
 
             var command = new CreateActivoCommand
             {

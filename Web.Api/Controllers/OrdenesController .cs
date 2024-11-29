@@ -47,8 +47,6 @@ namespace Web.Api.Controllers
                 return BadRequest(new { Error = "El Valor de operacion debe contener 'C' por compra o 'V' por venta." });
             }
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             var command = new CreateOrdenCommand
             {
                 Cantidad = request.Cantidad,
@@ -64,7 +62,6 @@ namespace Web.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateOrdenRequest request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var command = new UpdateOrdenCommand
             {
