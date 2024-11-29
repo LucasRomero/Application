@@ -42,6 +42,11 @@ namespace Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrdenRequest request)
         {
+            if (string.IsNullOrEmpty(request.Operacion) || request.Operacion.Length > 1)
+            {
+                return BadRequest(new { Error = "El Valor de operacion debe contener 'C' por compra o 'V' por venta." });
+            }
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var command = new CreateOrdenCommand
@@ -49,7 +54,7 @@ namespace Web.Api.Controllers
                 Cantidad = request.Cantidad,
                 ActivoId = request.ActivoId,
                 CuentaId = request.CuentaId,
-                Operacion = request.Operacion
+                Operacion = Convert.ToChar(request.Operacion)
             };
 
             var result = await _mediator.Send(command);

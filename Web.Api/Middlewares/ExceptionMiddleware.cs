@@ -1,5 +1,8 @@
 ﻿using Application.Exceptions;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Web.Api.Middlewares
 {
@@ -21,27 +24,33 @@ namespace Web.Api.Middlewares
             }
             catch (ValidationException ex)
             {
-                await HandleExceptionAsync(context, HttpStatusCode.BadRequest, Result<string>.Failure(ex.Message));
+
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Code = HttpStatusCode.BadRequest,
+                    Message = ex.Errors,
+                    Timestamp = DateTime.UtcNow
+                });
+
             }
+
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, Result<string>.Failure("Ocurrio un error"));
+
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Code = HttpStatusCode.InternalServerError,
+                    Message = ex.Message,
+                    Timestamp = DateTime.UtcNow
+                });
+
             }
-        }
-
-        private static async Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, Result<string> message)
-        {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)statusCode;
-
-            var response = new
-            {
-                Code = statusCode,
-                Message = message,
-                Timestamp = DateTime.UtcNow
-            };
-
-            await context.Response.WriteAsJsonAsync(response);
         }
 
     }

@@ -13,7 +13,7 @@ namespace Application.Features.Ordenes.Create
     {
         public int CuentaId { get; set; }
         public int Cantidad { get; set; }
-        public char Operacion { get; set; }
+        public string Operacion { get; set; }
         public int ActivoId { get; set; }
     }
 }
