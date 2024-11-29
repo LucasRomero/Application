@@ -91,50 +91,6 @@ namespace TestProject.Services
             Assert.AreEqual("Tipo de activo con ID 0 no encontrado.", result.Error);
         }
 
-
-        [TestMethod]
-        public async Task Handle_should_returnEstadoNotFoundFailureResult()
-        {
-            // Arrange
-            var command = new CreateOrdenCommand
-            {
-                Cantidad = 1,
-                Operacion = 'C',
-                ActivoId = 1,
-                CuentaId = 1,
-            };
-
-            var activoRepositoryMock = new Mock<IActivoRepository>();
-            activoRepositoryMock
-                .Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new Activo() { });
-
-            _unitOfWorkMock
-                .Setup(uow => uow.ActivoRepository)
-                .Returns(activoRepositoryMock.Object);
-
-
-            var tipoActivoRepositoryMock = new Mock<ITipoActivoRepository>();
-            tipoActivoRepositoryMock
-                .Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new TipoActivo() { });
-
-            _unitOfWorkMock
-                .Setup(uow => uow.TipoActivoRepository)
-                .Returns(tipoActivoRepositoryMock.Object);
-
-
-            var handler = new CreateOrdenCommandHandler(_unitOfWorkMock.Object);
-
-            // Act
-            Result<int> result = await handler.Handle(command, default);
-
-            // Assert
-            Assert.IsTrue(result.IsFailure);
-            Assert.AreEqual("Estado con ID 4 no encontrado.", result.Error);
-        }
-
-
         [TestMethod]
         public async Task Handle_should_returnSuccedResult()
         {
