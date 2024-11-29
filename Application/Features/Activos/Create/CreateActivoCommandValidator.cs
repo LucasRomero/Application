@@ -14,6 +14,9 @@ namespace Application.Features.Activos.Create
 
         public CreateActivoCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .GreaterThanOrEqualTo(0);
+
             RuleFor(x => x.Precio)
                 .NotEmpty()
                 .GreaterThan(0)

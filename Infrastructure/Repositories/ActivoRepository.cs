@@ -34,6 +34,7 @@ namespace Infrastructure.Repositories
 
         public async Task AddAsync(Activo activo)
         {
+            _context.Entry(activo).State = EntityState.Added;
             await _context.Activos.AddAsync(activo);
         }
 
@@ -44,6 +45,7 @@ namespace Infrastructure.Repositories
 
         public async Task Delete(Activo activo)
         {
+            _context.Entry(activo).State = EntityState.Modified;
             _context.Activos.Remove(activo);
         }
     }

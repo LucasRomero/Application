@@ -14,11 +14,11 @@ namespace Application.Features.Ordenes.Update
         public UpdateOrdenCommandValidator()
         {
             RuleFor(x => x.IdOrden)
-                .NotEmpty()
+                .GreaterThan(0)
                 .WithMessage("Debe contener un IdOrden asociada");
 
             RuleFor(x => x.EstadoId)
-                .NotEmpty()
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("Debe contener un EstadoId asociada");
         }
     }

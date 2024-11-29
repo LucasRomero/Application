@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Features.Activos.Delete;
+using Core.Entities;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace BApplication.Features.Activos.Delete
 {
-    public class DeleteActivoCommandValidator : AbstractValidator<Activo>
+    public class DeleteActivoCommandValidator : AbstractValidator<DeleteActivoCommand>
     {
         public DeleteActivoCommandValidator()
         {
-            RuleFor(c => c.Id).NotEmpty();
+            RuleFor(c => c.ActivoId)
+                .GreaterThanOrEqualTo(0)
+                .NotEmpty();
         }
 
     }

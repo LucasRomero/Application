@@ -21,15 +21,22 @@ namespace Application.Features.Ordenes.Create
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<int>> Handle(CreateActivoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CreateActivoCommand command, CancellationToken cancellationToken)
         {
+
+            var activoCheck = await _unitOfWork.ActivoRepository.GetByIdAsync(command.Id);
+            if (activoCheck is not null)
+            {
+                return Result<int>.Failure($"Activo con ID {command.Id} ya utilizado, ingrese otro ID nuevo.");
+            }
 
             var activo = new Activo
             {
-                Nombre = request.Nombre,
-                Ticker = request.Ticker,
-                Precio = request.Precio,
-                TipoId = request.TipoId,
+                Id = command.Id,
+                Nombre = command.Nombre,
+                Ticker = command.Ticker,
+                Precio = command.Precio,
+                TipoId = command.TipoId,
             };
 
 

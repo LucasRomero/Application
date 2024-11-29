@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Features.Ordenes.GetById;
+using Core.Entities;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BApplication.Features.Activos.Delete
+namespace BApplication.Features.Ordenes.GetById
 {
-    public class DeleteOrdenCommandValidator : AbstractValidator<Activo>
+    public class GetOrdenByIdQueryValidator : AbstractValidator<GetOrdenByIdQuery>
     {
-        public DeleteOrdenCommandValidator()
+        public GetOrdenByIdQueryValidator()
         {
             RuleFor(c => c.Id)
                 .GreaterThanOrEqualTo(0)

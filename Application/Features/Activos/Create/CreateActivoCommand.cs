@@ -13,6 +13,7 @@ namespace Application.Features.Activos.Create
 {
     public sealed record CreateActivoCommand : ICommand<Result<int>>
     {
+        public int Id { get; set; }
         public string Nombre { get; set; }
         public string Ticker { get; set; }
         public decimal Precio { get; set; }
