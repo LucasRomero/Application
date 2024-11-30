@@ -1,13 +1,13 @@
 name: application_services
 services:
   application_api:
-    image: ${DOCKER_REGISTRY-}application_api
+    image: application_api
     container_name: application_api
     build:
       context: .
       dockerfile: Web.Api/Dockerfile
     ports:
-      - "5000:8080"
+      - "5000:5000"
     depends_on:
       - docker_sqlserver
 
@@ -19,3 +19,7 @@ services:
     environment:
       SA_PASSWORD: "Password123"
       ACCEPT_EULA: "Y"
+    volumes:
+      - sql_data:/var/opt/mssql
+volumes:
+   sql_data:
