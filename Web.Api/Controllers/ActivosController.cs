@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Features.Activos.Create;
 using Application.Features.Activos.Delete;
 using Application.Features.Activos.Get;
@@ -11,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using Web.Api.Extension;
 
 namespace Web.Api.Controllers
 {
@@ -28,42 +30,44 @@ namespace Web.Api.Controllers
 
         [Authorize]
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IResult> GetAll()
         {
-            var activos = await _mediator.Send(new GetAllActivosQuery());
-            return Ok(activos);
+            var result = await _mediator.Send(new GetAllActivosQuery());
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
         [HttpGet("GetById")]
-        public async Task<IActionResult> GetById([FromQuery] int id)
+        public async Task<IResult> GetById([FromQuery] int id)
         {
-            var activo = await _mediator.Send(new GetActivoByIdQuery { Id = id });
-            if (activo == null) return NotFound();
+            Result<ActivoResponse> result = await _mediator.Send(new GetActivoByIdQuery { Id = id });
 
-            return Ok(activo);
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateActivoRequest request)
+        public async Task<IResult> Create([FromBody] CreateActivoRequest request)
         {
 
             var command = new CreateActivoCommand
             {
+                Id = request.Id,
                 Nombre = request.Nombre,
                 Precio = request.Precio,
                 Ticker = request.Ticker,
                 TipoId = request.TipoId
             };
 
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { result.Value }, command);
+             Result<int> result = await _mediator.Send(command);
+
+            return result.Match(Results.Created, CustomResults.Problem);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IResult> Delete(int id)
         {
-            await _mediator.Send(new DeleteActivoCommand(id));
-            return Ok();
+            Result result = await _mediator.Send(new DeleteActivoCommand(id));
+
+            return result.Match(Results.NoContent, CustomResults.Problem);
         }
 
     }

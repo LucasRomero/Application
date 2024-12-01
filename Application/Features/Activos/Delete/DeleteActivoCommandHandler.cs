@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using Application.Errors;
+using Application.Exceptions;
+using Core.Entities;
 using Core.Interfaces;
 using MediatR;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Activos.Delete
 {
-    internal sealed class DeleteActivoCommandHandler : IRequestHandler<DeleteActivoCommand>
+    internal sealed class DeleteActivoCommandHandler : IRequestHandler<DeleteActivoCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
         public DeleteActivoCommandHandler(IUnitOfWork unitOfWork)
@@ -17,18 +19,27 @@ namespace Application.Features.Activos.Delete
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(DeleteActivoCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DeleteActivoCommand command, CancellationToken cancellationToken)
         {
 
-            Activo? activo = await _unitOfWork.ActivoRepository.GetByIdAsync(request.ActivoId);
+            Activo? activo = await _unitOfWork.ActivoRepository.GetByIdAsync(command.ActivoId);
 
             if (activo is null)
             {
-                return;
+                return Result.Failure(ActivoErrors.NotFound(command.ActivoId));
+            }
+
+            var ordenes = _unitOfWork.OrdenesRepository.GetAllByIdActivoAsync(command.ActivoId);
+
+            if (ordenes is not null)
+            {
+                return Result.Failure(ActivoErrors.OrdenesAsociadas(command.ActivoId));
             }
 
             await _unitOfWork.ActivoRepository.Delete(activo);
             await _unitOfWork.Commit();
+
+            return Result.Success();
         }
     }
 }

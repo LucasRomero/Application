@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Errors;
+using Application.Exceptions;
 using Core.Entities;
 using Core.Enums;
 using Core.Interfaces;
@@ -26,14 +27,14 @@ namespace Application.Features.Ordenes.Create
             var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(command.ActivoId);
             if (activo == null)
             {
-                return Result<int>.Failure($"Activo con ID {command.ActivoId} no encontrado.");
+                return Result.Failure<int>(ActivoErrors.NotFound(command.ActivoId));
             }
 
             activo.TipoActivo = await _unitOfWork.TipoActivoRepository.GetByIdAsync(activo.TipoId);
 
             if (activo.TipoActivo is null)
             {
-                return Result<int>.Failure($"Tipo de activo con ID {activo.TipoId} no encontrado.");
+                return Result<int>.Failure(TipoActivoErrors.NotFound(activo.TipoId));
             }
 
             command.Activo = activo;

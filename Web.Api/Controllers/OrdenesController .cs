@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Features.Ordenes.Create;
 using Application.Features.Ordenes.Delete;
 using Application.Features.Ordenes.Get;
@@ -7,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using Web.Api.Extension;
 
 namespace Web.Api.Controllers
 {
@@ -24,28 +26,28 @@ namespace Web.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IResult> GetAll()
         {
-            var ordenes = await _mediator.Send(new GetAllOrdenesQuery());
-            return Ok(ordenes);
+            var result = await _mediator.Send(new GetAllOrdenesQuery());
+
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IResult> GetById(int id)
         {
-            var orden = await _mediator.Send(new GetOrdenByIdQuery { Id = id });
-            if (orden == null) return NotFound();
+            var result = await _mediator.Send(new GetOrdenByIdQuery { Id = id });
 
-            return Ok(orden);
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateOrdenRequest request)
+        public async Task<IResult> Create([FromBody] CreateOrdenRequest request)
         {
-            if (string.IsNullOrEmpty(request.Operacion) || request.Operacion.Length > 1)
-            {
-                return BadRequest(new { Error = "El Valor de operacion debe contener 'C' por compra o 'V' por venta." });
-            }
+            //if (string.IsNullOrEmpty(request.Operacion) || request.Operacion.Length > 1)
+            //{
+            //    return BadRequest(new { Error = "El Valor de operacion debe contener 'C' por compra o 'V' por venta." });
+            //}
 
             var command = new CreateOrdenCommand
             {
@@ -56,11 +58,12 @@ namespace Web.Api.Controllers
             };
 
             var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = result.Value }, command);
+
+            return result.Match(Results.Created, CustomResults.Problem);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateOrdenRequest request)
+        public async Task<IResult> Update([FromBody] UpdateOrdenRequest request)
         {
 
             var command = new UpdateOrdenCommand
@@ -70,14 +73,16 @@ namespace Web.Api.Controllers
             };
 
             var result = await _mediator.Send(command);
-            return Ok(result);
+
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IResult> Delete(int id)
         {
-            await _mediator.Send(new DeleteOrdenCommand(id));
-            return Ok();
+            var result = await _mediator.Send(new DeleteOrdenCommand(id));
+
+            return result.Match(Results.NoContent, CustomResults.Problem);
         }
 
     }

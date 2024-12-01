@@ -103,7 +103,7 @@ builder.Services.AddScoped<ITipoActivoRepository, TipoActivoRepository>();
 builder.Services.AddScoped<IActivoRepository, ActivoRepository>();
 
 builder.Services.AddSingleton<ITokenProvider, TokenProvider>();
-
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -155,8 +155,6 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
-
-app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 

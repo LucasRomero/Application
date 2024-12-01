@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Ordenes.Update
 {
-    public sealed record UpdateOrdenCommand : ICommand<Result>
+    public sealed record UpdateOrdenCommand : ICommand<Result<Orden>>
     {
         public int IdOrden { get; set; }
         public int EstadoId { get; set; }

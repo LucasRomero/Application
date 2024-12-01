@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Errors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +7,23 @@ using System.Threading.Tasks;
 
 namespace Application.Exceptions
 {
-
-    public abstract class AppException : Exception
+    public sealed record ValidationError : Error
     {
-        protected AppException(string message) : base(message) { }
-    }
-
-    public class ValidationException : AppException
-    {
-        public IEnumerable<ValidationError> Errors { get; }
-
-        public ValidationException(IEnumerable<ValidationError> errors)
-            : base("Se encontraron errores de validación.")
+        public ValidationError(Error[] errors)
+            : base(
+                "Validation.General",
+                "One or more validation errors occurred",
+                ErrorType.Validation)
         {
             Errors = errors;
         }
+
+        public Error[] Errors { get; }
+
+        public static ValidationError FromResults(IEnumerable<Result> results)
+        {
+            return new(results.Where(r => r.IsFailure).Select(r => r.Error).ToArray());
+        }
     }
-
-    public record ValidationError(string propertyName, string errorMessage);
-
 }
 

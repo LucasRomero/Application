@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Errors;
+using Application.Exceptions;
 using Application.Features.Ordenes.Delete;
 using Core.Entities;
 using Core.Interfaces;
@@ -19,14 +20,14 @@ namespace Application.Features.Activos.Delete
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(DeleteOrdenCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DeleteOrdenCommand command, CancellationToken cancellationToken)
         {
 
-            Orden? orden = await _unitOfWork.OrdenesRepository.GetByIdAsync(request.OrdenId);
+            Orden? orden = await _unitOfWork.OrdenesRepository.GetByIdAsync(command.OrdenId);
 
             if (orden is null)
             {
-                return Result.Failure("la Orden no fue encontrada");
+                return Result.Failure(OrdenErrors.NotFound(command.OrdenId));
             }
 
             await _unitOfWork.OrdenesRepository.Delete(orden);

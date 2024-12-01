@@ -50,5 +50,10 @@ namespace Infrastructure.Repositories
         {
             return await _context.OrdenesInversion.Where(x => x.CuentaId == id).ToListAsync();
         }
+
+        public async Task<IEnumerable<Orden>> GetAllByIdActivoAsync(int id)
+        {
+            return await _context.OrdenesInversion.Where(x => x.ActivoId == id).ToListAsync();
+        }
     }
 }

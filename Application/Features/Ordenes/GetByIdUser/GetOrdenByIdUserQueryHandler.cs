@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Errors;
+using Application.Exceptions;
 using Core.Entities;
 using Core.Interfaces;
 using MediatR;
@@ -19,13 +20,13 @@ namespace Application.Features.Ordenes.GetById
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<Orden>>> Handle(GetOrdenByIdUserQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<Orden>>> Handle(GetOrdenByIdUserQuery query, CancellationToken cancellationToken)
         {
-            var orden = await _unitOfWork.OrdenesRepository.GetByIdUserAsync(request.IdUser);
+            var orden = await _unitOfWork.OrdenesRepository.GetByIdUserAsync(query.IdUser);
 
             if (orden is null)
             {
-                return Result<IEnumerable<Orden>>.Failure($"Orden con Id {request.IdUser} no encontrada");
+                return Result<IEnumerable<Orden>>.Failure(OrdenErrors.NotFoundOrdenByIdUser(query.IdUser));
             }
 
             return Result<IEnumerable<Orden>>.Success(orden);

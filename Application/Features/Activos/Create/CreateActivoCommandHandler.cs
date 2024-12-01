@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Errors;
+using Application.Exceptions;
 using Application.Features.Activos.Create;
 using Core.Entities;
 using Core.Enums;
@@ -27,7 +28,7 @@ namespace Application.Features.Ordenes.Create
             var activoCheck = await _unitOfWork.ActivoRepository.GetByIdAsync(command.Id);
             if (activoCheck is not null)
             {
-                return Result<int>.Failure($"Activo con ID {command.Id} ya utilizado, ingrese otro ID nuevo.");
+                return Result.Failure<int>(ActivoErrors.NotFound(command.Id));
             }
 
             var activo = new Activo

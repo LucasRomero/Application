@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Features.Activos.Create;
 using Application.Features.Activos.Delete;
 using Application.Features.Activos.Get;
@@ -10,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using Web.Api.Extension;
 
 namespace Web.Api.Controllers
 {
@@ -27,10 +29,11 @@ namespace Web.Api.Controllers
 
         [Authorize]
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IResult> GetAll()
         {
-            var tipos = await _mediator.Send(new GetAllTiposQuery());
-            return Ok(tipos);
+            var result = await _mediator.Send(new GetAllTiposQuery());
+
+            return result.Match(Results.Ok, CustomResults.Problem);
         }
 
 
