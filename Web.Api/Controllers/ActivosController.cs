@@ -59,7 +59,10 @@ namespace Web.Api.Controllers
 
              Result<int> result = await _mediator.Send(command);
 
-            return result.Match(Results.Created, CustomResults.Problem);
+            return result.Match(
+                id => Results.Created($"/activos/{id}", new { id }),
+                CustomResults.Problem
+            );
         }
 
         [HttpDelete("{id}")]

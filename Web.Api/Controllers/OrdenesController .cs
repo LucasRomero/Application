@@ -52,9 +52,12 @@ namespace Web.Api.Controllers
                 Operacion = request.Operacion
             };
 
-            var result = await _mediator.Send(command);
+            Result<int> result = await _mediator.Send(command);
 
-            return result.Match(Results.Created, CustomResults.Problem);
+            return result.Match(
+                id => Results.Created($"/ordenes/{id}", new { id }),
+                CustomResults.Problem
+            );
         }
 
         [HttpPut]

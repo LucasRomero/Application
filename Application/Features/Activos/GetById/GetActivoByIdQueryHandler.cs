@@ -26,6 +26,11 @@ namespace Application.Features.Activos.GetById
 
             var activo = await _unitOfWork.ActivoRepository.GetByIdAsync(query.Id);
 
+            if (activo is null)
+            {
+                return Result<ActivoResponse>.Failure(ActivoErrors.NotFound(query.Id));
+            }
+
             var response = new ActivoResponse
             {
                 Id = activo.Id,

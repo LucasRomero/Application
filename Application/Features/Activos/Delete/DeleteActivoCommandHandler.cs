@@ -29,9 +29,9 @@ namespace Application.Features.Activos.Delete
                 return Result.Failure(ActivoErrors.NotFound(command.ActivoId));
             }
 
-            var ordenes = _unitOfWork.OrdenesRepository.GetAllByIdActivoAsync(command.ActivoId);
+            var ordenes = await _unitOfWork.OrdenesRepository.GetAllByIdActivoAsync(command.ActivoId);
 
-            if (ordenes is not null)
+            if (ordenes.Any())
             {
                 return Result.Failure(ActivoErrors.OrdenesAsociadas(command.ActivoId));
             }
