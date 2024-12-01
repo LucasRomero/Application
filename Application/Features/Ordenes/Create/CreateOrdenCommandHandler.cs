@@ -42,7 +42,7 @@ namespace Application.Features.Ordenes.Create
             var orden = new Orden
             {
                 Cantidad = command.Cantidad,
-                Operacion = command.Operacion,
+                Operacion = Convert.ToChar(command.Operacion),
                 MontoTotal = CalcularMontoTotal(command),
                 EstadoId = (int)EstadosOrden.EnProceso,
                 CuentaId = command.CuentaId,

@@ -21,7 +21,7 @@ namespace Application.Features.Ordenes.Create
             RuleFor(x => x.Operacion)
                 .Must(o => o.ToString().Length == 1)
                 .NotEmpty()
-                .Must(value => value == 'C' || value == 'V')
+                .Must(value => value == "C" || value == "V" || value == "c" || value == "v")
                 .WithMessage("El Valor debe contener 'C' por compra o 'V' por venta.");
 
             RuleFor(x => x.ActivoId)
