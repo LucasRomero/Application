@@ -67,9 +67,9 @@ namespace Web.Api
                 }
 
                 return new Dictionary<string, object?>
-            {
-                { "errors", validationError.Errors }
-            };
+                {
+                    { "errors", validationError.Errors }
+                };
             }
         }
 

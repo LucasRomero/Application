@@ -1,12 +1,12 @@
-﻿using BookStoreInfrastructure;
-using Core.Entities;
-using Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookStoreInfrastructure;
+using Core.Entities;
+using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -43,6 +43,7 @@ namespace Infrastructure.Repositories
 
         public async Task Delete(Orden orden)
         {
+            _context.Entry(orden).State = EntityState.Deleted;
             _context.OrdenesInversion.Remove(orden);
         }
 
